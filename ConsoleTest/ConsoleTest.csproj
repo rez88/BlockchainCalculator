@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EA66627C-FB39-4F01-A6AB-36F92C147CA7}</ProjectGuid>
+    <ProjectGuid>{6C799B7E-1A4E-4EF6-B303-CEA59E09EBCD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConsoleTest</RootNamespace>
@@ -54,9 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleCalc\ConsoleCalc.csproj">
-      <Project>{D95FA423-B242-4CA1-B506-857E9AEA78DA}</Project>
-      <Name>ConsoleCalc</Name>
+    <ProjectReference Include="..\ITUniver.Calc.Core\ITUniver.Calc.Core.csproj">
+      <Project>{b6f25292-f0b6-4d84-92e2-683140ede8a4}</Project>
+      <Name>ITUniver.Calc.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
