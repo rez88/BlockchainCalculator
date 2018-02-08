@@ -1,8 +1,12 @@
 ﻿using ITUniver.Calc.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ITUniver.Calc.WinFormApp
@@ -11,30 +15,26 @@ namespace ITUniver.Calc.WinFormApp
     {
 
         private ConsoleCalc.Calc calc { get; set; }
+
         private IOperation lastOperation { get; set; }
-        public class Operation
-        {
-            public string Name { get; set; }
-            
-        }
 
         public Form1()
         {
             InitializeComponent();
+            ITim.Interval = 2000;
+            ITim.Tick += new EventHandler(btnCalc_Click);
             
             #region Загрузка операций
 
             calc = new ConsoleCalc.Calc();
-            var operations = calc.GetOpers();
-            
+
             cbOperation.DataSource = calc.GetOpers();
             cbOperation.DisplayMember = "Name";
-           
+
             btnCalc.Enabled = false;
             #endregion
-       }
 
-
+        }
 
         private void btnLuck_Click(object sender, EventArgs e)
         {
@@ -44,9 +44,8 @@ namespace ITUniver.Calc.WinFormApp
         private void btnCalc_Click(object sender, EventArgs e)
         {
             tbInput.Focus();
-            
-            // получить операцию
-            var oper = cbOperation.SelectedItem as IOperation;
+            tbInput_Click(sender, e);
+
             if (lastOperation == null)
                 return;
 
@@ -62,49 +61,27 @@ namespace ITUniver.Calc.WinFormApp
 
             // показать результат
             tbResult.Text = $"{result}";
+
+            // добавить в историю в БД
+            MyHelper.GetAll(lastOperation.Name, args, result);
+            // добавить в историю на форму
+            lbHistory.Items.Add($"{result}");
+            ITim.Enabled = false;
         }
 
         private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // получить операцию
             lastOperation = cbOperation.SelectedItem as IOperation;
-            if (tbInput.Text == "")
-            {
-                btnCalc.Enabled = false;
-            }
-            else
-            {
-                btnCalc.Enabled = true;
-            }
+
+            tbInput.Enabled = true;
         }
-
-        private void tbInput_ControlAdded(object sender, ControlEventArgs e)
-        {
-            if (cbOperation.Text == "")
-            {
-                btnCalc.Enabled = false;
-            }
-            else
-            {
-                btnCalc.Enabled = true;
-            }
-
-        }
-
-        
 
         private void tbInput_TextChanged(object sender, EventArgs e)
         {
-            btnCalc.Enabled = true;
-        }
-
-        private void tbInput_Click(object sender, EventArgs e)
-        {
-            tbInput.SelectAll();
-        }
-
-        private void tbInput_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
+            btnCalc.Enabled = !string.IsNullOrWhiteSpace(tbInput.Text);
+            ITim.Enabled = true;
+           
         }
 
         private void tbInput_KeyUp(object sender, KeyEventArgs e)
@@ -113,6 +90,11 @@ namespace ITUniver.Calc.WinFormApp
             {
                 btnCalc_Click(sender, e);
             }
+        }
+
+        private void tbInput_Click(object sender, EventArgs e)
+        {
+            tbInput.SelectAll();
         }
     }
 }
