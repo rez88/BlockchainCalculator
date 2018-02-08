@@ -35,7 +35,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tbResult = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnReset = new System.Windows.Forms.Button();
             this.btnCalc = new System.Windows.Forms.Button();
             this.btnLuck = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
@@ -96,7 +95,11 @@
             this.tbInput.Size = new System.Drawing.Size(378, 20);
             this.tbInput.TabIndex = 1;
             this.tbInput.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.tbInput.Click += new System.EventHandler(this.tbInput_Click);
+            this.tbInput.TextChanged += new System.EventHandler(this.tbInput_TextChanged);
             this.tbInput.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.tbInput_ControlAdded);
+            this.tbInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbInput_KeyPress);
+            this.tbInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbInput_KeyUp);
             // 
             // groupBox3
             // 
@@ -125,7 +128,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnReset);
             this.panel1.Controls.Add(this.btnCalc);
             this.panel1.Controls.Add(this.btnLuck);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -134,18 +136,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(394, 54);
             this.panel1.TabIndex = 8;
-            // 
-            // btnReset
-            // 
-            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReset.Enabled = false;
-            this.btnReset.Location = new System.Drawing.Point(228, 9);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(2);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(72, 35);
-            this.btnReset.TabIndex = 8;
-            this.btnReset.Text = "Очистить";
-            this.btnReset.UseVisualStyleBackColor = true;
             // 
             // btnCalc
             // 
@@ -204,7 +194,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox tbResult;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnCalc;
         private System.Windows.Forms.Button btnLuck;
     }

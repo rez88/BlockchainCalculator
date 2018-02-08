@@ -1,11 +1,8 @@
-﻿using System;
+﻿using ITUniver.Calc.Core.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ITUniver.Calc.WinFormApp
@@ -14,7 +11,7 @@ namespace ITUniver.Calc.WinFormApp
     {
 
         private ConsoleCalc.Calc calc { get; set; }
-
+        private IOperation lastOperation { get; set; }
         public class Operation
         {
             public string Name { get; set; }
@@ -28,19 +25,14 @@ namespace ITUniver.Calc.WinFormApp
             #region Загрузка операций
 
             calc = new ConsoleCalc.Calc();
-            var operations = calc.GetOperNames();
-            List<string> op = new List<string>(operations);
-            cbOperation.Items.Clear();
-            cbOperation.Items.AddRange(op.ToArray());
-
-            #endregion
-
-            if (cbOperation.Text=="")
-            {
-                btnCalc.Enabled = false;
-            }
+            var operations = calc.GetOpers();
             
-        }
+            cbOperation.DataSource = calc.GetOpers();
+            cbOperation.DisplayMember = "Name";
+           
+            btnCalc.Enabled = false;
+            #endregion
+       }
 
 
 
@@ -51,8 +43,12 @@ namespace ITUniver.Calc.WinFormApp
 
         private void btnCalc_Click(object sender, EventArgs e)
         {
+            tbInput.Focus();
+            
             // получить операцию
-            var oper = $"{cbOperation.SelectedItem}";
+            var oper = cbOperation.SelectedItem as IOperation;
+            if (lastOperation == null)
+                return;
 
             // получить данные
             var args = tbInput.Text
@@ -62,7 +58,7 @@ namespace ITUniver.Calc.WinFormApp
                 .ToArray();
 
             // вычислить результат
-            var result = calc.Exec(oper, args);
+            var result = lastOperation.Exec(args);
 
             // показать результат
             tbResult.Text = $"{result}";
@@ -70,6 +66,7 @@ namespace ITUniver.Calc.WinFormApp
 
         private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lastOperation = cbOperation.SelectedItem as IOperation;
             if (tbInput.Text == "")
             {
                 btnCalc.Enabled = false;
@@ -91,6 +88,31 @@ namespace ITUniver.Calc.WinFormApp
                 btnCalc.Enabled = true;
             }
 
+        }
+
+        
+
+        private void tbInput_TextChanged(object sender, EventArgs e)
+        {
+            btnCalc.Enabled = true;
+        }
+
+        private void tbInput_Click(object sender, EventArgs e)
+        {
+            tbInput.SelectAll();
+        }
+
+        private void tbInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void tbInput_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                btnCalc_Click(sender, e);
+            }
         }
     }
 }

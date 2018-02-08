@@ -66,9 +66,9 @@ namespace ConsoleCalc
         /// Получить список имен операциий
         /// </summary>
         /// <returns></returns>
-        public string[] GetOperNames()
+        public IOperation[] GetOpers()
         {
-            return operations.Select(it => it.Name).ToArray();
+            return operations.ToArray();
         }
 
         public double Exec(string oper, double[] args)
