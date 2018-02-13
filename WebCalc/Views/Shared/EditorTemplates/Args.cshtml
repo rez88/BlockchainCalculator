@@ -1,0 +1,29 @@
+﻿@model IEnumerable<double>
+
+@{
+    var items = Model ?? new double[2];
+}
+<div id="ArgsContainer" style="padding:10px;display:inline-block;background-color: orange;">
+    @foreach (var item in items)
+    {
+        @Html.TextBox("[]", item)
+    }
+</div>
+
+<button onclick="AddArgs(); return false;" class="btn btn-info btn-sm">+</button>
+
+<script>
+    function AddArgs() {
+        var input = $("<input type='text' name='Args[]' />");
+
+        $("#ArgsContainer").append(input);
+    }
+</script>
+<script type="text/javascript">
+            addEventListener("keyup", function(event) {
+                if (event.keyCode == 32)
+                    var input = $("<input type='text' name='Args[]' />");
+                                $("#ArgsContainer").append(input);
+            });
+
+</script>

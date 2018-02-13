@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ITUniver.Calc.DB.Models.Operation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Операции</h2>
+
+<table class="table">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.Name == "sum")
+                {
+                    @Html.DisplayFor(m => item, "RedOperation")
+
+                    @Html.Partial("DisplayTemplates/RedOperation", item)
+                }
+                else
+                {
+                    @Html.DisplayFor(m => item)
+                }
+            </td>
+            <td>
+                @Html.EditorFor(m => item)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@MyHelper.Submit("go")
+
+@Html.Random(0, 10)
+
+@Html.Random1(10, 20)

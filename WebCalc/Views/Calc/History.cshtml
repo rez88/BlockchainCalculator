@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "История";
+}
+<h2>История</h2>
+<p></p>@Html.Label("История")
+<table class="table">
+    @foreach (var value in ViewBag.Array)
+    {
+        <p>@value</p>
+    }
+</table>
