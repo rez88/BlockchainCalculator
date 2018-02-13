@@ -21,17 +21,24 @@ namespace ITUniver.Calc.WinFormApp
         public Form1()
         {
             InitializeComponent();
-            ITim.Interval = 2000;
-            ITim.Tick += new EventHandler(btnCalc_Click);
-            
+
             #region Загрузка операций
 
             calc = new ConsoleCalc.Calc();
 
-            cbOperation.DataSource = calc.GetOpers();
+            cbOperation.Items.Clear();
+
+            var operations = calc.GetOpers();
+            cbOperation.DataSource = operations;
             cbOperation.DisplayMember = "Name";
 
             btnCalc.Enabled = false;
+            #endregion
+
+            #region Загрузка истории
+
+            lbHistory.Items.AddRange(MyHelper.GetAll());
+
             #endregion
 
         }
@@ -45,6 +52,43 @@ namespace ITUniver.Calc.WinFormApp
         {
             tbInput.Focus();
             tbInput_Click(sender, e);
+
+            Calculate();
+        }
+
+        private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // получить операцию
+            lastOperation = cbOperation.SelectedItem as IOperation;
+
+            tbInput.Enabled = true;
+        }
+
+        private void tbInput_TextChanged(object sender, EventArgs e)
+        {
+            btnCalc.Enabled = !string.IsNullOrWhiteSpace(tbInput.Text);
+        }
+
+        private void tbInput_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                btnCalc_Click(sender, e);
+            }
+        }
+
+        private void tbInput_Click(object sender, EventArgs e)
+        {
+            tbInput.SelectAll();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Calculate()
+        {
 
             if (lastOperation == null)
                 return;
@@ -63,38 +107,24 @@ namespace ITUniver.Calc.WinFormApp
             tbResult.Text = $"{result}";
 
             // добавить в историю в БД
-            MyHelper.GetAll(lastOperation.Name, args, result);
+            MyHelper.AddToHistory(lastOperation.Name, args, result);
             // добавить в историю на форму
-            lbHistory.Items.Add($"{result}");
-            ITim.Enabled = false;
+            lbHistory.Items.Clear();
+            lbHistory.Items.AddRange(MyHelper.GetAll());
         }
 
-        private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbOperation_DrawItem(object sender, DrawItemEventArgs e)
         {
-            // получить операцию
-            lastOperation = cbOperation.SelectedItem as IOperation;
+            e.DrawBackground();
+            var item = cbOperation.Items[e.Index] as IOperation;
+            if (item == null)
+                return;
 
-            tbInput.Enabled = true;
-        }
-
-        private void tbInput_TextChanged(object sender, EventArgs e)
-        {
-            btnCalc.Enabled = !string.IsNullOrWhiteSpace(tbInput.Text);
-            ITim.Enabled = true;
-           
-        }
-
-        private void tbInput_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyData == Keys.Enter)
-            {
-                btnCalc_Click(sender, e);
-            }
-        }
-
-        private void tbInput_Click(object sender, EventArgs e)
-        {
-            tbInput.SelectAll();
+            var superOper = cbOperation.Items[e.Index] as SuperOperation;
+            Brush brush = superOper != null ? Brushes.Green : Brushes.Red;
+            var name = superOper != null ? superOper.OwnerName : item.Name;
+            e.Graphics.DrawString(name, e.Font, brush, e.Bounds);
+            e.DrawFocusRectangle();
         }
     }
 }
