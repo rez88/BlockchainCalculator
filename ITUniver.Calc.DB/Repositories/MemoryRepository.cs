@@ -25,5 +25,20 @@ namespace ITUniver.Calc.DB.Repositories
 
         public IEnumerable<IHistoryItem> GetAll()
         { return null; }
+
+        IEnumerable<HistoryItem> IBaseRepository<HistoryItem>.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        HistoryItem IBaseRepository<HistoryItem>.Find(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save(HistoryItem item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

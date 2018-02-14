@@ -9,21 +9,27 @@
         @Html.TextBox("[]", item)
     }
 </div>
+<button onclick="AddArgs(); return false;" oninput="InputArgs(this)" class="btn btn-info btn-sm">+</button>
 
-<button onclick="AddArgs(); return false;" class="btn btn-info btn-sm">+</button>
-
-<script>
+<script type="text/javascript">
     function AddArgs() {
-        var input = $("<input type='text' name='Args[]' />");
+        var input = $("<input type='text' oninput='InputArgs(this)'  name='Args[]' />");
 
         $("#ArgsContainer").append(input);
     }
-</script>
-<script type="text/javascript">
-            addEventListener("keyup", function(event) {
-                if (event.keyCode == 32)
-                    var input = $("<input type='text' name='Args[]' />");
-                                $("#ArgsContainer").append(input);
-            });
 
+    function InputArgs(e) {
+        if (e && e.originalEvent) {
+            var symbol = e.originalEvent.data;
+            if (symbol == " ") {
+                AddArgs();
+                var last = $("input[name^=Args]").last();
+                last.focus();
+                last.bind("input", InputArgs)
+            }
+        }
+    }
+    setTimeout(function () {
+        $("input[name^=Args]").bind("input", InputArgs)
+    }, 1000);
 </script>

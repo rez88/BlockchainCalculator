@@ -73,6 +73,11 @@ namespace ITUniver.Calc.DB.Repositories
                     var doubleValue = (double)value;
                     str = $"{doubleValue.ToString(CultureInfo.InvariantCulture)}";
                 }
+                else if (value is bool)
+                {
+                    var boolean = (bool)value;
+                    str = $"{boolean.ToString(CultureInfo.InvariantCulture)}";
+                }
                 // todo boolean
 
                 values.Add(str);

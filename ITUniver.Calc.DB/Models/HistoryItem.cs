@@ -13,5 +13,7 @@ namespace ITUniver.Calc.DB.Models
         public double? Result { get; set; }
 
         public DateTime ExecDate { get; set; }
+
+        public long User { get; set; }
     }
 }

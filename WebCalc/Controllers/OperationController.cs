@@ -1,10 +1,13 @@
 ﻿using ITUniver.Calc.DB.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace WebCalc.Controllers
 {
+    [Authorize]
     public class OperationController : Controller
     {
         // GET: Operation
@@ -21,6 +24,5 @@ namespace WebCalc.Controllers
 
             return View(operations);
         }
-        
     }
 }
