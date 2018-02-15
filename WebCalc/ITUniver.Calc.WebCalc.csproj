@@ -121,17 +121,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CachingFilterAttribute.cs" />
     <Compile Include="Controllers\CalcController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OperationController.cs" />
     <Compile Include="Extensions\Helper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OperationModel.cs" />
-    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +181,8 @@
     <Content Include="Views\Calc\History.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -200,10 +202,6 @@
     <ProjectReference Include="..\ITUniver.Calc.DB\ITUniver.Calc.DB.csproj">
       <Project>{ea765e13-6dff-461d-b906-ec0a4bceb654}</Project>
       <Name>ITUniver.Calc.DB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ITUniver.Calc.WinFormApp\ITUniver.Calc.WinFormApp.csproj">
-      <Project>{75832E1E-A04A-4DFD-AB22-9555FAD4612B}</Project>
-      <Name>ITUniver.Calc.WinFormApp</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

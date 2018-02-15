@@ -1,4 +1,5 @@
 ﻿using ITUniver.Calc.DB.Models;
+using ITUniver.Calc.DB.NH.Repositories;
 using ITUniver.Calc.DB.Repositories;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -9,13 +10,11 @@ namespace WebCalc.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private IUserRepository UserRepository
-            = new UserRepository();
         private IUserRepository Users { get; set; }
 
         public AccountController()
         {
-            Users = new UserRepository();
+            Users = new NHUserRepository();
         }
 
         // GET: Account
@@ -32,7 +31,7 @@ namespace WebCalc.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            if (Users.Check(model.Login, model.Password))
+            if(Users.Check(model.Login, model.Password))
             {
                 // поставить отметку о аутентификации
                 FormsAuthentication.SetAuthCookie(model.Login, true);
@@ -43,50 +42,50 @@ namespace WebCalc.Controllers
 
             return View();
         }
+
+        public void Logout()
+        {
+            FormsAuthentication.SignOut();
+            FormsAuthentication.RedirectToLoginPage();
+        }
+
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        public void Logout()
-        {
-            FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage();
-            
-        }
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Register(RegisterModel model)
         {
-           // if (!ModelState.IsValid)
-           //     return View();
+            if (!ModelState.IsValid)
+                return View();
 
-            if (Users.Register(model.Name, model.Login, model.Password, model.BirthDay, model.Sex))
+            if (Users.GetByName(model.Login) == null)
             {
+                var user = new User()
+                {
+                    Login = model.Login,
+                    Name = model.Name,
+                    Password = model.Password,
+                    Sex = model.Sex,
+                    BirthDay = model.BirthDay
+                };
+                Users.Save(user);
 
-                ModelState.AddModelError("", "Такой пользователь уже зарегистрирован");
-                /* FormsAuthentication.SetAuthCookie(model.Login, true);
-                 return RedirectToAction("Index", "Calc");*/
+                // поставить отметку о аутентификации
+                FormsAuthentication.SetAuthCookie(model.Login, true);
+
+                return RedirectToAction("Index", "Calc");
+            }else
+            {
+                ModelState.AddModelError("Login", "Придумайте другое имя. Это уже занято");
             }
-
-            #region СОХРАНИТЬ
-
-            var item = new User();
-            item.Name = model.Name;
-            item.Login = model.Login;
-            item.Password = model.Password;
-            item.BirthDay = model.BirthDay;
-            item.Sex = model.Sex;
-
-            UserRepository.Save(item);
-
-
-            #endregion
             
-
             return View();
         }
 
+       
     }
 }

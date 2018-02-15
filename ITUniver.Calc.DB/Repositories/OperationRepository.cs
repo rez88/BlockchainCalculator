@@ -2,7 +2,7 @@
 
 namespace ITUniver.Calc.DB.Repositories
 {
-    public class OperationRepository : BaseRepository<Operation>, IOperationRepository
+    public class OperationRepository: BaseRepository<Operation>, IOperationRepository
     {
     }
 }

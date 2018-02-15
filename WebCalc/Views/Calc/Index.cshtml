@@ -6,16 +6,18 @@
 
 <h2>Калькулятор</h2>
 
-<form action="~/Calc/Index" method="post"></form>
+<form action="~/Calc/Index" method="post">
 
-@using (Html.BeginForm())
+</form>
+
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+        
         <div class="form-group">
             @Html.LabelFor(model => model.Operation, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

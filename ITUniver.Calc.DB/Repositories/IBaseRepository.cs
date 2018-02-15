@@ -13,6 +13,8 @@ namespace ITUniver.Calc.DB.Repositories
     {
         IEnumerable<T> GetAll();
 
+        IEnumerable<T> GetAll(string condition);
+
         T Find(long id);
 
         void Save(T item);

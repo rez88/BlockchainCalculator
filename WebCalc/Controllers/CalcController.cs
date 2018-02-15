@@ -1,10 +1,10 @@
 ﻿using ConsoleCalc;
 using ITUniver.Calc.DB.Models;
+using ITUniver.Calc.DB.NH.Repositories;
 using ITUniver.Calc.DB.Repositories;
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 using WebCalc.Models;
 
 namespace WebCalc.Controllers
@@ -12,10 +12,14 @@ namespace WebCalc.Controllers
     [Authorize]
     public class CalcController : Controller
     {
-        private IHistoryRepository HistoryRepository
-            = new HistoryRepository();
+        private IHistoryRepository HistoryRepository 
+            = new NHHistoryRepository();
 
-        private IOperationRepository OperationRepository = new OperationRepository();
+        private IOperationRepository OperationRepository 
+            = new OperationRepository();
+
+        private IUserRepository UserRepository
+            = new NHUserRepository();
 
         // GET: Calc
         public ActionResult Index()
@@ -25,8 +29,7 @@ namespace WebCalc.Controllers
             var model = new OperationModel();
 
             model.Operations = calc.GetOpers().Select(
-                o => new SelectListItem()
-                {
+                o => new SelectListItem() {
                     Text = $"{o.Name}",
                     Value = $"{o.Name}"
                 });
@@ -47,9 +50,13 @@ namespace WebCalc.Controllers
 
             var item = new HistoryItem();
             item.Args = string.Join(" ", model.Args);
-            item.Operation = 1;//oper;
+            item.Operation = OperationRepository
+                .GetAll($"[Name] = N'{model.Operation}'")
+                .FirstOrDefault()
+                .Id;
             item.Result = model.Result;
             item.ExecDate = DateTime.Now;
+            item.Author = UserRepository.GetByName(User.Identity.Name);
 
             HistoryRepository.Save(item);
 
@@ -59,13 +66,11 @@ namespace WebCalc.Controllers
         }
 
         // GET: Calc
-        
         public ActionResult History()
         {
-            var k = 1;
-            var history = HistoryRepository.GetAll()
-                .Where(o=>o.User==k);
-            return View(history);
+            var hist = UserRepository.GetByName(User.Identity.Name).History;
+            
+            return View(hist);
         }
     }
 }

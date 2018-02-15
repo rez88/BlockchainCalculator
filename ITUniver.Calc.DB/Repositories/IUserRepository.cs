@@ -12,7 +12,6 @@ namespace ITUniver.Calc.DB.Repositories
         /// <param name="password">Пароль</param>
         /// <returns></returns>
         bool Check(string login, string password);
-        bool Register(string Name, string Login, string Password, DateTime BirthDay, bool Sex);
 
         /// <summary>
         /// Загрузить пользователя по имени

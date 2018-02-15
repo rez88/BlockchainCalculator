@@ -40,6 +40,11 @@ namespace ITUniver.Calc.DB.Repositories
             return ReadData();
         }
 
+        public IEnumerable<T> GetAll(string condition)
+        {
+            return ReadData(condition);
+        }
+
         public void Save(T item)
         {
             var props = typeof(T).GetProperties()
@@ -59,6 +64,11 @@ namespace ITUniver.Calc.DB.Repositories
                 {
                     str = "NULL";
                 }
+                else if (value is bool)
+                {
+                    var bit = (bool)value ? 1 : 0;
+                    str = $"{bit}";
+                }
                 else if (value is string)
                 {
                     str = $"N'{value}'";
@@ -72,11 +82,6 @@ namespace ITUniver.Calc.DB.Repositories
                 {
                     var doubleValue = (double)value;
                     str = $"{doubleValue.ToString(CultureInfo.InvariantCulture)}";
-                }
-                else if (value is bool)
-                {
-                    var boolean = (bool)value;
-                    str = $"{boolean.ToString(CultureInfo.InvariantCulture)}";
                 }
                 // todo boolean
 
@@ -105,11 +110,15 @@ namespace ITUniver.Calc.DB.Repositories
 
         #region Работа с БД
 
-        private IEnumerable<T> ReadData()
+        private IEnumerable<T> ReadData(string condition = "")
         {
             var items = new List<T>();
 
             var queryString = $"SELECT * FROM [dbo].[{tableName}]";
+            if (!string.IsNullOrWhiteSpace(condition))
+            {
+                queryString += $" WHERE {condition}";
+            }
 
             using (var connection = new SqlConnection(connectionString))
             {

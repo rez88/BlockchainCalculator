@@ -21,30 +21,28 @@
             @Html.DisplayNameFor(model => model.ExecDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User)
+        Время выполнения
         </th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Operation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Args)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Result)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExecDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User)
-            </td>
-
-        </tr>
-    }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Operation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Args)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Result)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExecDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExecDate.TimeOfDay)
+        </td>
+    </tr>
+}
 
 </table>

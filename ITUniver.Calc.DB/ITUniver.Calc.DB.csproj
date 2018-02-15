@@ -45,8 +45,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,17 +67,20 @@
   <ItemGroup>
     <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Models\IHistoryItem.cs" />
-    <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="NH\Helper.cs" />
+    <Compile Include="NH\Repositories\NHBaseRepository.cs" />
+    <Compile Include="NH\Repositories\NHHistoryRepository.cs" />
+    <Compile Include="NH\Repositories\NHUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Repositories\OperationRepository.cs" />
     <Compile Include="Repositories\HistoryRepository.cs" />
     <Compile Include="Repositories\IBaseRepository.cs" />
     <Compile Include="Repositories\IHistoryRepository.cs" />
-    <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\MemoryRepository.cs" />
-    <Compile Include="Repositories\OperationRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +103,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>CalcDB.mdf</DependentUpon>
     </Content>
+    <EmbeddedResource Include="NH\Mapping\HistoryItem.hbm.xml" />
+    <EmbeddedResource Include="NH\Mapping\User.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

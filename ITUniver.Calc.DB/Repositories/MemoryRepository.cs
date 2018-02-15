@@ -40,5 +40,15 @@ namespace ITUniver.Calc.DB.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<HistoryItem> HistoryByUser(string login)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<HistoryItem> GetAll(string condition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
