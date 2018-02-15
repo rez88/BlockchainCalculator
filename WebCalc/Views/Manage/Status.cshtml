@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ITUniver.Calc.DB.Models.User>
+
+@{
+    ViewBag.Title = "Пользователи";
+}
+
+<h2>Пользователи</h2>
+
+<p>
+    @Html.ActionLink("Создать нового", "Register","Account")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Login)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthDay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @(item.Sex ? "муж" : "жен")
+            </td>
+            <td>
+                @if (item.BirthDay.HasValue)
+                {
+                    @Html.DisplayFor(modelItem => item.BirthDay)
+                }
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Забанить", "Ban", new { id = item.Id }) |
+                @Html.ActionLink("Активный", "Active", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }) |
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<table>
+    <td>
+        @Html.ActionLink("Все пользователи", "Status", new { id = 0 }) |
+        @Html.ActionLink("Активный", "Status", new { id = 1 }) |
+        @Html.ActionLink("Забанены", "Status", new { id = 2 }) |
+        @Html.ActionLink("Удалены", "Status", new { id = 3 })
+    </td>
+    </table>

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ITUniver.Calc.DB.Models.User>
+
+@{
+    ViewBag.Title = "Пользователи";
+}
+
+<h2>Пользователи</h2>
+
+<p>
+    @Html.ActionLink("Создать нового", "Register", "Account")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Login)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthDay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.EditorFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.CheckBoxFor(modelItem=>item.Sex)
+            </td>
+            <td>
+                @if (item.BirthDay.HasValue)
+                {
+                    @Html.EditorFor(modelItem => item.BirthDay)
+                }
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.Status)
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<div>
+   @MyHelper.Submit("Сохранить");
+</div>
