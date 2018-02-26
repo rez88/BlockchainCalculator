@@ -1,38 +1,37 @@
-﻿@model IEnumerable<ITUniver.Calc.DB.Models.Operation>
+﻿@model WebCalc.Models.Statistic
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Статистика";
 }
 
-<h2>Операции</h2>
+<h2>Статистика</h2>
 
-<table class="table">
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Operation)
+        </dt>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @if (item.Name == "sum")
-                {
-                    @Html.DisplayFor(m => item, "RedOperation")
+        <dd>
+            @Html.DisplayFor(model => model.Operation)
+        </dd>
 
-                    @Html.Partial("DisplayTemplates/RedOperation", item)
-                }
-                else
-                {
-                    @Html.DisplayFor(m => item)
-                }
-            </td>
-            <td>
-                @Html.EditorFor(m => item)
-            </td>
-        </tr>
-    }
+        <dt>
+            @Html.DisplayNameFor(model => model.Count)
+        </dt>
 
-</table>
+        <dd>
+            @Html.DisplayFor(model => model.Count)
+        </dd>
 
-@MyHelper.Submit("go")
+        <dt>
+            @Html.DisplayNameFor(model => model.Avg)
+        </dt>
 
-@Html.Random(0, 10)
+        <dd>
+            @Html.DisplayFor(model => model.Avg)
+        </dd>
 
-@Html.Random1(10, 20)
+    </dl>
+</div>

@@ -39,7 +39,7 @@
                 @Html.EditorFor(modelItem => item.Login)
             </td>
             <td>
-                @Html.CheckBoxFor(modelItem=>item.Sex)
+                @Html.CheckBoxFor(modelItem => item.Sex)
             </td>
             <td>
                 @if (item.BirthDay.HasValue)
@@ -57,5 +57,5 @@
 </table>
 
 <div>
-   @MyHelper.Submit("Сохранить");
+    @MyHelper.Submit("Сохранить");
 </div>

@@ -68,9 +68,11 @@
     <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Models\IHistoryItem.cs" />
     <Compile Include="Models\Operation.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="NH\Helper.cs" />
     <Compile Include="NH\Repositories\NHBaseRepository.cs" />
+    <Compile Include="NH\Repositories\NHOperationRepository.cs" />
     <Compile Include="NH\Repositories\NHHistoryRepository.cs" />
     <Compile Include="NH\Repositories\NHUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +105,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>CalcDB.mdf</DependentUpon>
     </Content>
+    <EmbeddedResource Include="NH\Mapping\Operation.hbm.xml" />
+    <EmbeddedResource Include="NH\Mapping\Role.hbm.xml" />
     <EmbeddedResource Include="NH\Mapping\HistoryItem.hbm.xml" />
     <EmbeddedResource Include="NH\Mapping\User.hbm.xml" />
   </ItemGroup>

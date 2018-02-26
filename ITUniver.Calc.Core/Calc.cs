@@ -12,15 +12,20 @@ namespace ConsoleCalc
     {
         private IList<IOperation> operations { get; set; }
 
-        public Calc()
+        public Calc(string extensionPath = "")
         {
             operations = new List<IOperation>();
 
             // Загружаем наши операции
             LoadOperation(Assembly.GetExecutingAssembly());
 
+            if (string.IsNullOrEmpty(extensionPath))
+            {
+                extensionPath = Path.Combine(Environment.CurrentDirectory, "Extensions");
+            }
+
             // Загружаем сторонние библиотеки с операциями
-            var extensionsDir = Path.Combine(Environment.CurrentDirectory, "Extensions");
+            var extensionsDir = extensionPath;
 
             if (!Directory.Exists(extensionsDir))
                 return;

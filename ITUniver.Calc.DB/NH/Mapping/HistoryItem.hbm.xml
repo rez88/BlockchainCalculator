@@ -7,13 +7,11 @@
     <id name="Id">
       <generator class="native" />
     </id>
-    <property name="Operation"/>
     <property name="Args"/>
     <property name="Result"/>
     <property name="ExecDate" />
-
+    <property name="ExecTime" />
+    <many-to-one name="Operation" class="Operation" lazy="false"/>
     <many-to-one name="Author" class="User" lazy="false" />
-
   </class>
-
 </hibernate-mapping>

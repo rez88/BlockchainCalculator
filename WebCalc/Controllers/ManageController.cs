@@ -1,16 +1,13 @@
 ﻿using ITUniver.Calc.DB.Models;
 using ITUniver.Calc.DB.NH.Repositories;
 using ITUniver.Calc.DB.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using WebCalc.Models;
 
 namespace WebCalc.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="admin")]
     public class ManageController : Controller
     {
         private IUserRepository Users { get; set; }
@@ -29,12 +26,7 @@ namespace WebCalc.Controllers
 
         public ActionResult Delete(long id)
         {
-            var user = Users.Find(id);
-            if (user != null)
-            {
-                user.Status = UserStatus.Deleted;
-                Users.Save(user);
-            }
+            Users.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -59,7 +51,12 @@ namespace WebCalc.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        public ActionResult Status(UserStatus id)
+        {
+            var users = Users.GetAll()
+                   .Where(u => u.Status == id);
+            return View(users);
+        }
         [Authorize]
         public ActionResult Edit(long id)
         {
@@ -67,12 +64,12 @@ namespace WebCalc.Controllers
     .Where(u => u.Id == id);
             return View(users);
         }
-
+       
         [HttpPost]
         [Authorize]
         public ActionResult Edit(RegisterModel model)
         {
-           
+
             if (!ModelState.IsValid)
                 return View();
 
@@ -97,14 +94,5 @@ namespace WebCalc.Controllers
 
             return View();
         }
-
-        public ActionResult Status(UserStatus s)
-        {
-            
-            var users = Users.GetAll().Where(u => u.Status == s);
-            
-            return View(users);
-        }
-
     }
 }

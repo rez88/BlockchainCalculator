@@ -13,8 +13,8 @@ namespace ITUniver.Calc.WinFormApp
         private static IBaseRepository<HistoryItem> History =
             new BaseRepository<HistoryItem>("History");
 
-        private static IBaseRepository<Operation> Operations =
-            new BaseRepository<Operation>();
+        private static IBaseRepository<Oper> Operations =
+            new BaseRepository<Oper>();
 
         public static void AddToHistory(string oper,
             double[] args,

@@ -1,13 +1,14 @@
 ﻿using ITUniver.Calc.DB.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ITUniver.Calc.DB.NH.Repositories
 {
     public class NHBaseRepository<T> : IBaseRepository<T>
         where T : class, IEntity
     {
-        public void Delete(long id)
+        public virtual void Delete(long id)
         {
             var item = Find(id);
 
@@ -29,7 +30,7 @@ namespace ITUniver.Calc.DB.NH.Repositories
             }
         }
 
-        public T Find(long id)
+        public virtual T Find(long id)
         {
             var session = Helper.GetCurrentSession();
 
@@ -37,20 +38,29 @@ namespace ITUniver.Calc.DB.NH.Repositories
             // item = session.Load<T>(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
-            using (var session = Helper.GetCurrentSession())
-            {
-                return session.CreateCriteria<T>().List<T>();
-            }
+            var session = Helper.GetCurrentSession();
+
+            return session.CreateCriteria<T>().List<T>();
         }
 
-        public IEnumerable<T> GetAll(string condition)
+        protected IEnumerable<T> GetAll(Expression<Func<T, bool>> condition)
+        {
+            var session = Helper.GetCurrentSession();
+
+            return session
+                .QueryOver<T>()
+                .And(condition)
+                .List<T>();
+        }
+
+        public virtual IEnumerable<T> GetAll(string condition)
         {
             return GetAll();
         }
 
-        public void Save(T item)
+        public virtual void Save(T item)
         {
             var session = Helper.GetCurrentSession();
             try

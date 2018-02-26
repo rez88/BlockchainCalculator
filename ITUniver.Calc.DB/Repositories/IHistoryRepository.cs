@@ -10,5 +10,6 @@ namespace ITUniver.Calc.DB.Repositories
 
     public interface IOperationRepository : IBaseRepository<Operation>
     {
+        Operation GetByName(string Name);
     }
 }

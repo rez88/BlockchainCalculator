@@ -1,5 +1,7 @@
 ﻿using ITUniver.Calc.Core.Interfaces;
+using System;
 using System.Linq;
+using System.Threading;
 
 namespace ITUniver.Calc.Core.Operations
 {
@@ -11,6 +13,8 @@ namespace ITUniver.Calc.Core.Operations
 
         public override double Exec(double[] args)
         {
+            Thread.Sleep(new Random().Next(1, 3) * new Random().Next(100, 3000));
+
             return args.Sum();
         }
     }

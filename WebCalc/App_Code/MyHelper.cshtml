@@ -13,3 +13,10 @@
            />
 }
 
+@helper ButtonJs(string name, string click)
+{
+    <button class="btn btn-success" onclick="@(click);return false;">
+        @(name.ToUpper())
+    </button>
+}
+

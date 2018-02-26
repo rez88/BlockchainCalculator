@@ -5,7 +5,7 @@ namespace ITUniver.Calc.DB.Models
 {
     public interface IHistoryItem : IEntity
     {
-        long Operation { get; set; }
+       // long Operation { get; set; }
 
         string Args { get; set; }
 

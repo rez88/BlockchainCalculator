@@ -18,14 +18,16 @@ namespace ITUniver.Calc.DB.Models
         public virtual bool Sex { get; set; }
         [Display(Name = "Дата рождения")]
         public virtual DateTime? BirthDay { get; set; }
-        [Display(Name = "История")]
+
         public virtual ICollection<HistoryItem> History { get; set; }
         [Display(Name = "Статус")]
         public virtual UserStatus Status { get; set; }
+        [Display(Name = "Доступ")]
+        public virtual Role Role { get; set; }
     }
 
     public enum UserStatus
-    {
+    {  
         Deleted = 0,
         Active = 1,
         Ban = 2

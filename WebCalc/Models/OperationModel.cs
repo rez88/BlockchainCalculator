@@ -1,9 +1,7 @@
-﻿using System;
+﻿using ITUniver.Calc.DB.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace WebCalc.Models
@@ -17,7 +15,7 @@ namespace WebCalc.Models
 
         [Display(Name = "Операция")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Непонятно какую операцию выполнять!")]
-        public string Operation { get; set; }
+        public Operation Oper { get; set; }
 
         [Display(Name = "Аргументы")]
         public IEnumerable<double> Args { get; set; }

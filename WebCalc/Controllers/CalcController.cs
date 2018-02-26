@@ -3,74 +3,91 @@ using ITUniver.Calc.DB.Models;
 using ITUniver.Calc.DB.NH.Repositories;
 using ITUniver.Calc.DB.Repositories;
 using System;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using WebCalc.Models;
 
 namespace WebCalc.Controllers
 {
+    
     [Authorize]
     public class CalcController : Controller
     {
+        private IOperationRepository Opers { get; set; }
+
+        
         private IHistoryRepository HistoryRepository 
             = new NHHistoryRepository();
 
         private IOperationRepository OperationRepository 
-            = new OperationRepository();
+            = new NHOperationRepository();
 
         private IUserRepository UserRepository
             = new NHUserRepository();
 
+        private Calc Calc { get; set; }
+
+        public CalcController()
+        {
+            var extPath = ConfigurationManager.AppSettings["ExtensionPath"];
+            Calc = new Calc(extPath);
+            Opers = new NHOperationRepository();
+        }
+
         // GET: Calc
+        [AllowAnonymous]
         public ActionResult Index()
         {
-            var calc = new Calc();
-
             var model = new OperationModel();
-
-            model.Operations = calc.GetOpers().Select(
-                o => new SelectListItem() {
-                    Text = $"{o.Name}",
-                    Value = $"{o.Name}"
-                });
+            model.Operations = OperationRepository.GetAll()
+                .Select(x=>new SelectListItem { Text = $"{x.Name}", Value= $"{x.Name}" })
+                .ToList();
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(OperationModel model)
+        [AllowAnonymous]
+        public ActionResult Exec(OperationModel model)
         {
-            var calc = new Calc();
+           
+            // todo -> синхронизация операций
 
-            model.Operations = calc.GetOpers().Select(o => new SelectListItem() { Text = $"{o.Name}", Value = $"{o.Name}" });
-
-            model.Result = calc.Exec(model.Operation, model.Args.ToArray());
-
+            var sw = new Stopwatch();
+            sw.Start();
+            model.Result = Calc.Exec(model.Oper.Name, model.Args.ToArray());
+            sw.Stop();
+            if (!ModelState.IsValid)
+                return View();
             #region Save
-
-            var item = new HistoryItem();
-            item.Args = string.Join(" ", model.Args);
-            item.Operation = OperationRepository
-                .GetAll($"[Name] = N'{model.Operation}'")
-                .FirstOrDefault()
-                .Id;
-            item.Result = model.Result;
-            item.ExecDate = DateTime.Now;
-            item.Author = UserRepository.GetByName(User.Identity.Name);
-
-            HistoryRepository.Save(item);
-
+            if (User.Identity.IsAuthenticated)
+           
+            {
+                var item = new HistoryItem()
+                {
+                    Args = string.Join(" ", model.Args),
+                    Operation = OperationRepository.GetByName(model.Oper.Name),
+                    Result = model.Result,
+                    Author = UserRepository.GetByName(User.Identity.Name),
+                    ExecDate=DateTime.Now,
+                    ExecTime = sw.ElapsedMilliseconds,
+                };
+                HistoryRepository.Save(item);
             #endregion
-
-            return View(model);
+            }
+            return Json(new { model.Result });
         }
 
         // GET: Calc
         public ActionResult History()
         {
-            var hist = UserRepository.GetByName(User.Identity.Name).History;
+            var history = User.IsInRole("admin") 
+                ? HistoryRepository.GetAll()
+                : UserRepository.GetByName(User.Identity.Name).History;
             
-            return View(hist);
+            return View(history);
         }
     }
 }
